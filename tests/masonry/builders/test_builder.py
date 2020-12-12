@@ -154,3 +154,13 @@ def test_metadata_with_url_dependencies():
         "demo @ https://python-poetry.org/distributions/demo-0.1.0-py2.py3-none-any.whl"
         == requires_dist
     )
+
+
+def test_metadata_with_readme_files():
+    test_path = Path(__file__).parent / "fixtures" / "with_readme_files"
+    builder = Builder(Factory().create_poetry(test_path))
+
+    metadata = Parser().parsestr(builder.get_metadata_content())
+
+    with open(test_path / "README-1.rst") as f1, open(test_path / "README-2.rst") as f2:
+        assert metadata.get_payload() == "%s\n%s\n" % (f1.read(), f2.read())

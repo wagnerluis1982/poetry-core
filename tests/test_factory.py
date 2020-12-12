@@ -24,7 +24,7 @@ def test_create_poetry():
     assert package.authors == ["Sébastien Eustace <sebastien@eustace.io>"]
     assert package.license.id == "MIT"
     assert (
-        package.readme.relative_to(fixtures_dir).as_posix()
+        package.readme[0].relative_to(fixtures_dir).as_posix()
         == "sample_project/README.rst"
     )
     assert package.homepage == "https://python-poetry.org"

@@ -109,3 +109,13 @@ def merge_dicts(d1, d2):
             merge_dicts(d1[k], d2[k])
         else:
             d1[k] = d2[k]
+
+
+def content_type(path):
+    _, suffix = os.path.splitext(path)
+    if suffix == ".rst":
+        return "text/x-rst"
+    elif suffix in [".md", ".markdown"]:
+        return "text/markdown"
+    else:
+        return "text/plain"

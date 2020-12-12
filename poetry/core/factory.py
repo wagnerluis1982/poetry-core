@@ -17,6 +17,7 @@ from .poetry import Poetry
 from .pyproject import PyProjectTOML
 from .spdx import license_by_id
 from .utils._compat import Path
+from .utils.helpers import content_type
 
 
 logger = logging.getLogger(__name__)
@@ -68,7 +69,15 @@ class Factory(object):
         package.classifiers = local_config.get("classifiers", [])
 
         if "readme" in local_config:
-            package.readme = Path(poetry_file.parent) / local_config["readme"]
+            if isinstance(local_config["readme"], list):
+                package.readme = [
+                    Path(poetry_file.parent) / readme
+                    for readme in local_config["readme"]
+                ]
+            else:
+                package.readme = [Path(poetry_file.parent) / local_config["readme"]]
+
+            package.readme_type = content_type(package.readme[0])
 
         if "platform" in local_config:
             package.platform = local_config["platform"]
@@ -351,6 +360,15 @@ class Factory(object):
                                     name, extra
                                 )
                             )
+
+            # Checking readme file types (must match)
+            if "readme" in config and isinstance(config["readme"], list):
+                readme_types = {content_type(readme) for readme in config["readme"]}
+                if len(readme_types) > 1:
+                    result["errors"] += [
+                        "Declared README files must be of same type: found %s"
+                        % readme_types
+                    ]
 
         return result
 

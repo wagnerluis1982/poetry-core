@@ -74,7 +74,8 @@ class Package(PackageSpecification):
         self.documentation_url = None
         self.keywords = []
         self._license = None
-        self.readme = None
+        self.readme = []
+        self.readme_type = None
 
         self.requires = []
         self.dev_requires = []
