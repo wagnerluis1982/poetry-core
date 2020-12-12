@@ -162,5 +162,9 @@ def test_metadata_with_readme_files():
 
     metadata = Parser().parsestr(builder.get_metadata_content())
 
-    with open(test_path / "README-1.rst") as f1, open(test_path / "README-2.rst") as f2:
-        assert metadata.get_payload() == "%s\n%s\n" % (f1.read(), f2.read())
+    readme1 = test_path / "README-1.rst"
+    readme2 = test_path / "README-2.rst"
+    assert metadata.get_payload() == "%s\n%s\n" % (
+        readme1.read_text(),
+        readme2.read_text(),
+    )
