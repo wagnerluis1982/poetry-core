@@ -112,7 +112,7 @@ def merge_dicts(d1, d2):
 
 
 def content_type(path):
-    _, suffix = os.path.splitext(path)
+    suffix = Path(path).suffix
     if suffix == ".rst":
         return "text/x-rst"
     elif suffix in [".md", ".markdown"]:
