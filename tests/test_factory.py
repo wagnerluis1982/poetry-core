@@ -182,6 +182,13 @@ def test_validate_fails():
     assert Factory.validate(content) == {"errors": [expected], "warnings": []}
 
 
+def test_validate_multiple_readme_files():
+    with_readme_files = TOMLFile(fixtures_dir / "with_readme_files" / "pyproject.toml")
+    content = with_readme_files.read()["tool"]["poetry"]
+
+    assert Factory.validate(content) == {"errors": [], "warnings": []}
+
+
 def test_create_poetry_fails_on_invalid_configuration():
     with pytest.raises(RuntimeError) as e:
         Factory().create_poetry(
